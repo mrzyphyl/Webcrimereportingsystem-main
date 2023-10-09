@@ -1,0 +1,82 @@
+import { useState } from "react";
+import axios from "axios";
+import backgroundImage from "../assets/login.jpg";
+import logo from "../assets/crimee.jpg";
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState("");
+
+  const Auth = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/api/user/login", {
+        email: email,
+        password: password,
+      }).then((response) => {
+        window.location.href = "/dashboard";
+      });
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.errors);
+      }
+    }
+  };
+
+  const backgroundStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
+  const containerStyle = {
+    border: "2px solid #ccc",
+    borderRadius: "20px",
+    padding: "40px",
+    maxWidth: "800px",
+    width: "100%",
+    display: "flex",
+  };
+
+  const logoStyle = {
+    width: "350px",
+    height: "auto",
+    marginRight: "20px",
+  };
+
+  const formStyle = {
+    flex: 1,
+  };
+
+  return (
+    <div className="h-screen" style={backgroundStyle}>
+      <div style={containerStyle}>
+        <img src={logo} alt="Logo" style={logoStyle} />
+        <form onSubmit={Auth} style={formStyle}>
+          <h2 className="text-black">Login</h2>
+          <p className="text-red-500 mt-4">{msg}</p>
+          <div className="flex flex-col py-2">
+            <label className="text-black">Username</label>
+            <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="border-2 rounded py-2 px-3" />
+          </div>
+          <div className="flex flex-col py-2">
+            <label className="text-black">Password</label>
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="border-2 rounded py-2 px-3" />
+          </div>
+          <button className="w-full my-5 py-2 bg-teal-500 text-white font-semibold rounded-lg">Login</button>
+          <div className="text-center">
+            <p className="text-black">Don't Have Account? <a className="text-blue-500 hover:text-black" href="/register">Register</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
