@@ -13,28 +13,30 @@ const Crime = () => {
     getCrimes();
   }, []);
 
-  const getUser = async () => {
-    const token = localStorage.getItem("token");
-    const data = await axios.get(`http://localhost:8080/api/users/current`, {
-      headers: {
-        Authorization: `${token}`,
-      },
-    });
+  const getUser = () => {
+    // const token = localStorage.getItem("token");
+    axios.get(`http://localhost:5000/api/user`)
+    .then(result => {
+      console.log(result)
+      setName(result.data)
+    })
+    .catch(err => console.log(err));
 
-    const user = data.data.data.name;
-    setName(user);
+    // const user = data.data.data.name;
+    // setName(user);
   };
 
-  const getCrimes = async () => {
-    const token = localStorage.getItem("token");
-    const crimes = await axios.get(`http://localhost:8080/api/crimes`, {
-      headers: {
-        Authorization: `${token}`,
-      },
-    });
+  const getCrimes = () => {
+    // const token = localStorage.getItem("token");
+    axios.get(`http://localhost:5000/api/crime-report`)
+    .then(result => {
+      console.log(result)
+      setCrimes(result.data)
+    })
+    .catch(err => console.log(err));
     // console.log(crimes.data.paging.page);
-    const data = crimes.data.data;
-    setCrimes(data);
+    // const data = crimes.data.data;
+    // setCrimes(data);
   };
 
   return (

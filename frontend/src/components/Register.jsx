@@ -6,20 +6,32 @@ import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [birthday, setBirtday] = useState('')
+  const [sex, setSex] = useState('')
+  const [address, setAddress] = useState('')
+  const [contact_no, setContact] = useState('')
   const [msg, setMsg] = useState('');
   const history = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/users', {
+      await axios.post('http://localhost:5000/api/user', {
         name: name,
-        username: username,
+        email: email,
         password: password,
-      });
-      history('/');
+        birthday,
+        sex,
+        address,
+        contact_no
+      })
+      .then(result => {
+        console.log(result)
+        history('/')
+      })
+      .catch(err => console.log(err))
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.errors);
@@ -74,10 +86,46 @@ const Register = () => {
             />
           </div>
           <div className="flex flex-col py-2">
-            <label className="text-black">Username</label>
+            <label className="text-black">Email</label>
             <input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              className="border-2 rounded py-2 px-3"
+            />
+          </div>
+          <div className="flex flex-col py-2">
+            <label className="text-black">Birthday</label>
+            <input
+              value={birthday}
+              onChange={(e) => setBirtday(e.target.value)}
+              type="date"
+              className="border-2 rounded py-2 px-3"
+            />
+          </div>
+          <div className="flex flex-col py-2">
+            <label className="text-black">Sex</label>
+            <input
+              value={sex}
+              onChange={(e) => setSex(e.target.value)}
+              type="text"
+              className="border-2 rounded py-2 px-3"
+            />
+          </div>
+          <div className="flex flex-col py-2">
+            <label className="text-black">Address</label>
+            <input
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              type="text"
+              className="border-2 rounded py-2 px-3"
+            />
+          </div>
+          <div className="flex flex-col py-2">
+            <label className="text-black">Contact Number</label>
+            <input
+              value={contact_no}
+              onChange={(e) => setContact(e.target.value)}
               type="text"
               className="border-2 rounded py-2 px-3"
             />

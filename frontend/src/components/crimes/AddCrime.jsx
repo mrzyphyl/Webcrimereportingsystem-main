@@ -10,21 +10,26 @@ const AddCrime = () => {
   const [modal, setModal] = useState(false);
 
   async function handleSubmit() {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     await axios.post(
-      `http://localhost:8080/api/crimes`,
+      `http://localhost:5000/api/crime-report`,
       {
         name_crime: nameCrime,
         type_crime: typeCrime,
         location: location,
         incident_date: incidentDate,
       },
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
-    );
+      // {
+      //   headers: {
+      //     Authorization: `${token}`,
+      //   },
+      // }
+    )
+    .then(result => {
+      console.log(result)
+    })
+    .catch(err => console.log(err))
+    setModal(false);
 
     setModal(false);
   }
